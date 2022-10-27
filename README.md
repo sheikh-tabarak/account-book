@@ -1,8 +1,15 @@
-# account_book
+# Account Book
+
+## Features:
+- [Make & view transactions. Store & retrieve transaction record.]
+- [You can write details of the transactions.]
+- [View clean, crisp reports that are easy to read & understand.]
+- [Edit Customer Information, Manage & view Customer details.]
+
 
 A new Flutter project.
 
-## Getting Started
+ Getting Started
 
 This project is a starting point for a Flutter application.
 

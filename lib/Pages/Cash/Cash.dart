@@ -1,14 +1,18 @@
-import 'package:account_book/configurations/AppColors.dart';
-import 'package:account_book/configurations/BigText.dart';
-import 'package:account_book/configurations/Dimensions.dart';
-import 'package:account_book/widgets/CustomersList.dart';
-import 'package:account_book/classes/AccountsC.dart';
-import 'package:account_book/classes/DummyData.dart';
 import 'package:flutter/material.dart';
-import '../widgets/highlightbox.dart';
+import 'package:flutter/src/widgets/container.dart';
+import 'package:flutter/src/widgets/framework.dart';
 
-class Accounts extends StatelessWidget {
-  const Accounts({super.key});
+import '../../classes/AccountsC.dart';
+import '../../classes/DummyData.dart';
+import '../../configurations/AppColors.dart';
+import '../../configurations/BigText.dart';
+import '../../configurations/Dimensions.dart';
+import '../../widgets/CustomersList.dart';
+import '../../widgets/TableElement.dart';
+import '../../widgets/highlightbox.dart';
+
+class Cash extends StatelessWidget {
+  const Cash({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +22,8 @@ class Accounts extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-
-            
             HighlightBox(
+              size: Dimensions.height40*4,
               text: PositiveBalance().toString(),
               ArrowIcon: Icons.arrow_upward,
               message: 'Amount to give',
@@ -28,6 +31,7 @@ class Accounts extends StatelessWidget {
               color: AppColors.SucessColor,
             ),
             HighlightBox(
+              size: Dimensions.height40*4,
               ArrowIcon: Icons.arrow_downward,
               message: 'Amount to get',
               textColor: Colors.red,
@@ -72,16 +76,37 @@ class Accounts extends StatelessWidget {
         SizedBox(
           height: Dimensions.height10,
         ),
-        
-          CustomerList(
-              image:
-                  'https://raw.githubusercontent.com/jonataslaw/getx-community/master/getx.png',
-              CustomerName: 'Muhammad Tabarak',
-              balance: 100,
-              color: Colors.green,
-            ),
-        
-       
+
+// Container(
+//    height:double.maxFinite,
+//   child:
+        ListView.builder(
+            shrinkWrap: true,
+            scrollDirection: Axis.vertical,
+            reverse: false,
+            primary: true,
+            physics: NeverScrollableScrollPhysics(),
+            // physics:AlwaysScrollableScrollPhysics(),
+
+            //  physics: const NeverScrollableScrollPhysics(),
+            itemCount: 20,
+            itemBuilder: (context, index) {
+              return  TableElement(
+                      DateCell: DateTime.now(),
+                      DescriptionCell: 'Sold my Phone',
+                      TransactionUp: 2000,
+                      TransactionDown: 0,
+                      TransactionBalance: 100,);
+            }),
+//),
+
+        // CustomerList(
+        //     image:
+        //         'https://raw.githubusercontent.com/jonataslaw/getx-community/master/getx.png',
+        //     CustomerName: 'Muhammad Tabarak',
+        //     balance: 100,
+        //     color: Colors.green,
+        //   ),
       ],
     );
   }

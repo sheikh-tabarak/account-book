@@ -1,3 +1,6 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:account_book/configurations/AppColors.dart';
 import 'package:account_book/configurations/BigText.dart';
 import 'package:account_book/configurations/Dimensions.dart';
@@ -9,7 +12,10 @@ import 'package:page_transition/page_transition.dart';
 
 import 'HomePage.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   // print(Get.context!.height);
   runApp(const MyApp());
 }

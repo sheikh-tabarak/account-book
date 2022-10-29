@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "121122514928",
+    "project_id": "account-book-by-tech-legion",
+    "storage_bucket": "account-book-by-tech-legion.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:121122514928:android:8153a88ab9a743b6bb5f35",
+        "android_client_info": {
+          "package_name": "com.example.account_book"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "121122514928-qi98nl4ki005ve3d6d2fhjsb4qhgjmeo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHarOTIhkxwBDaybDlTjvb6VPS1nh22N0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "121122514928-qi98nl4ki005ve3d6d2fhjsb4qhgjmeo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

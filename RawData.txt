@@ -1,0 +1,79 @@
+GestureDetector(
+                      onTap: () => {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AccountDetailPage()))
+                      },
+                      child: Container(
+                        padding: EdgeInsets.only(
+                            top: Dimensions.height20,
+                            bottom: Dimensions.height20),
+                        decoration: BoxDecoration(
+                            border: Border(
+                                top: BorderSide(
+                                    width: 1,
+                                    color:
+                                        Color.fromARGB(255, 197, 197, 197)))),
+                        child: Column(
+                          children: [
+                            Container(
+                              
+                              child: Table(
+                                columnWidths: const <int, TableColumnWidth>{
+                                  0: FixedColumnWidth(64),
+                                  1: FlexColumnWidth(),
+                                  2: IntrinsicColumnWidth(),
+                                },
+                                children: <TableRow>[
+                                
+                                  TableRow(
+                                    children: <Widget>[
+                                      TableCell(
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              width: 50,
+                                              height: 50,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(30),
+                                                  image: DecorationImage(
+                                                      image: NetworkImage(
+                                                          AccountsData[index]
+                                                              .AccountImage),
+                                                      fit: BoxFit.cover)),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      TableCell(
+                                        verticalAlignment:
+                                            TableCellVerticalAlignment.middle,
+                                        child: BigText(
+                                          text:
+                                              AccountsData[index].AccountTitle,
+                                          size: Dimensions.font15,
+                                        ),
+                                      ),
+                                      TableCell(
+                                        child: SmallText(
+                                          text:
+                                              'Rs. ${AccountsData[index].AccountBalance}',
+                                          color: AccountsData[index]
+                                                      .AccountBalance >=
+                                                  0
+                                              ? Colors.green
+                                              : Colors.red,
+                                          weight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );

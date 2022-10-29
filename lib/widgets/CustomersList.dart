@@ -1,11 +1,14 @@
-import 'package:account_book/Pages/AccountDetailPage.dart';
-import 'package:account_book/configurations/BigText.dart';
-import 'package:account_book/configurations/Dimensions.dart';
-import 'package:account_book/configurations/SmallText.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
+
+import 'package:account_book/Pages/Account/AccountDetailPage.dart';
+import 'package:account_book/classes/AccountsC.dart';
+import 'package:account_book/configurations/BigText.dart';
+import 'package:account_book/configurations/Dimensions.dart';
+import 'package:account_book/configurations/SmallText.dart';
 
 import '../classes/DummyData.dart';
 
@@ -14,8 +17,17 @@ class CustomerList extends StatelessWidget {
   final String CustomerName;
   final double balance;
   final Color color;
+  late BuildContext globalcontext;
 
-  const CustomerList({
+  void setthecontext(BuildContext context) {
+    globalcontext = context;
+  }
+
+  BuildContext getthecontext() {
+    return globalcontext;
+  }
+
+  CustomerList({
     Key? key,
     required this.image,
     required this.CustomerName,
@@ -25,100 +37,115 @@ class CustomerList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      physics: const NeverScrollableScrollPhysics(),
-      child: Column(
-        children: [
-          Container(
-            height: double.maxFinite,
-            child: ListView.builder(
+    setthecontext(context);
+
+    return Container(
+      child: SingleChildScrollView(
+        physics: NeverScrollableScrollPhysics(),
+        child: StreamBuilder<List<AccountsC>>(
+            stream: GetAccount(),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Text('Error');
+              } else if (snapshot.hasData) {
+                final accounts = snapshot.data!;
+
+                return ListView(
+                    shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-
-                //  physics: const NeverScrollableScrollPhysics(),
-                itemCount: AccountsData.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () => {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => AccountDetailPage()))
-                    },
-
-                    child: Container(
-                        padding: EdgeInsets.only(
-                            top: Dimensions.height20,
-                            bottom: Dimensions.height20),
-                        decoration: BoxDecoration(
-                            border: Border(
-                                top: BorderSide(
-                                    width: 1,
-                                    color: Color.fromARGB(255, 197, 197, 197)))),
-                        child: Column(
-                          children: [
-                            Container(
-                              child: Row(
-                                //  mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Column(
-                                    children: [
-                                      Container(
-                                        width: 50,
-                                        height: 50,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(30),
-                                            image: DecorationImage(
-                                                image: NetworkImage(AccountsData[index].AccountImage),
-                                                fit: BoxFit.cover)),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    width: Dimensions.width15,
-                                  ),
-                                  Column(
-                                    
-                                    children: [
-                  
-                                       Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      BigText(
-                                        text: AccountsData[index].AccountTitle,
-                                        size: Dimensions.font15,
-                                      ),
-                                      SizedBox(
-                                        width: Dimensions.height40,
-                                      ),
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          SmallText(
-                                            text: 'Rs. ${AccountsData[index].AccountBalance}',
-                                            color: AccountsData[index].AccountBalance>=0?Colors.green:Colors.red,
-                                            weight: FontWeight.w600,
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                    ]
-                  
-                                
-                                  )
-                                 
-                                ],
-                              ),
-                            )
-                          ],
-                        )),
-                  );
-                }),
-          ),
-        ],
+                    children: [
+                      GestureDetector(
+                          onTap: () => {
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //       builder: (context) => AccountDetailPage(account:accounts.),
+                                // )
+                              },
+                          child: Column(
+                            children: accounts.map(buildList).toList(),
+                          )),
+                    ]);
+              } else {
+                return CircularProgressIndicator();
+              }
+            }),
       ),
     );
   }
+
+  Stream<List<AccountsC>> GetAccount() => FirebaseFirestore.instance
+      .collection('accounts')
+      .snapshots()
+      .map((snapshots) => snapshots.docs
+          .map((docs) => AccountsC.fromJson(docs.data()))
+          .toList());
+
+  Widget buildList(AccountsC account) => GestureDetector(
+        onTap: () => {
+          Navigator.push(
+              getthecontext(),
+              MaterialPageRoute(
+                  builder: (context) => AccountDetailPage(account: account))),
+        },
+        child: Container(
+          padding: EdgeInsets.only(
+              top: Dimensions.height20, bottom: Dimensions.height20),
+          decoration: BoxDecoration(
+              border: Border(
+                  top: BorderSide(
+                      width: 1, color: Color.fromARGB(255, 197, 197, 197)))),
+          child: Column(
+            children: [
+              Container(
+                child: Table(
+                  columnWidths: const <int, TableColumnWidth>{
+                    0: FixedColumnWidth(64),
+                    1: FlexColumnWidth(),
+                    2: IntrinsicColumnWidth(),
+                  },
+                  children: <TableRow>[
+                    TableRow(
+                      children: <Widget>[
+                        TableCell(
+                          child: Column(
+                            children: [
+                              Container(
+                                width: 50,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30),
+                                    image: DecorationImage(
+                                        image:
+                                            NetworkImage(account.AccountImage),
+                                        fit: BoxFit.cover)),
+                              ),
+                            ],
+                          ),
+                        ),
+                        TableCell(
+                          verticalAlignment: TableCellVerticalAlignment.middle,
+                          child: BigText(
+                            text: account.AccountTitle,
+                            size: Dimensions.font15,
+                          ),
+                        ),
+                        TableCell(
+                          child: SmallText(
+                            text: 'Rs. ${account.AccountBalance}',
+                            color: account.AccountBalance >= 0
+                                ? Colors.green
+                                : Colors.red,
+                            weight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
 }

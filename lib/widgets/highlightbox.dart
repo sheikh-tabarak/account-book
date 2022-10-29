@@ -13,13 +13,15 @@ class HighlightBox extends StatelessWidget {
   final String text;
   final String message;
   final IconData ArrowIcon;
+  final double size;
   const HighlightBox({
     Key? key,
     required this.color,
     required this.textColor,
     required this.text,
     required this.message,
-    required this.ArrowIcon,
+    required this.ArrowIcon, 
+    required this.size,
   }) : super(key: key);
 
   @override
@@ -27,7 +29,7 @@ class HighlightBox extends StatelessWidget {
     return Container(
      
 padding:EdgeInsets.all(Dimensions.height10),
-      width:(Dimensions.height40*4),
+      width:size,
       height: (Dimensions.height40*2),
       decoration: BoxDecoration(
          color: color,

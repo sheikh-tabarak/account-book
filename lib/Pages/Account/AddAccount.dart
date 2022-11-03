@@ -3,12 +3,16 @@ import 'dart:async';
 import 'package:account_book/HomePage.dart';
 import 'package:account_book/Pages/Account/Accounts.dart';
 import 'package:account_book/classes/AccountsC.dart';
+import 'package:account_book/classes/AcountTransactions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/route_manager.dart';
 import '../../configurations/AppColors.dart';
 import '../../configurations/Dimensions.dart';
+import '../../databases/Functions.dart';
 
 class AddAccount extends StatefulWidget {
   const AddAccount({super.key});
@@ -24,6 +28,9 @@ class _AddAccountState extends State<AddAccount> {
 
   @override
   Widget build(BuildContext context) {
+
+   
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.mainColor,
@@ -69,10 +76,14 @@ class _AddAccountState extends State<AddAccount> {
           right: 0,
         ),
         alignment: Alignment.bottomCenter,
-        child: FloatingActionButton.extended(
+        child: 
+        FloatingActionButton.extended(
           backgroundColor: AppColors.mainColor,
           onPressed: () => {
-            AddNewAccount(),
+            AddNewAccount(titleController.text, phoneNoController.text, typeController.text),
+          //  AddNewTransaction(),
+
+        //  AddNewTransaction(),
             // SnackBar(content: Text('Account Successfully Created')),
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -85,7 +96,7 @@ class _AddAccountState extends State<AddAccount> {
                           color: Colors.white,
                         ),
                         SizedBox(width: Dimensions.width10,),
-                        Text('Account Added'),
+                        Text('Account Added Successfully'),
                       ],
                     ),
                   )),
@@ -104,23 +115,70 @@ class _AddAccountState extends State<AddAccount> {
                 ],
               )),
         ),
+
+        
       ),
     );
   }
 
-  Future AddNewAccount() async {
-    final NewAccount = FirebaseFirestore.instance.collection('accounts').doc();
+//   Future AddNewAccount() async {
+//     final NewAccount = FirebaseFirestore.instance
+//     .collection('user')
+//     .doc(FirebaseAuth.instance.currentUser!.uid)
+//     .collection('accounts')
+//     .doc();
 
-    final Acc = AccountsC(
-        AccountId: NewAccount.id,
-        AccountImage:
-            'https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=740&t=st=1666973637~exp=1666974237~hmac=85143508f2ec52e9df251ae1b03ef76ebef47326e6a9d433ea2df8a08feea754',
-        AccountTitle: titleController.text,
-        AccountPhoneNo: phoneNoController.text,
-        AccountBalance: 0,
-        AccountType: typeController.text);
+//     final Acc = AccountsC(
+//         AccountId: NewAccount.id,
+//         AccountImage:
+//             'https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=740&t=st=1666973637~exp=1666974237~hmac=85143508f2ec52e9df251ae1b03ef76ebef47326e6a9d433ea2df8a08feea754',
+//         AccountTitle: titleController.text,
+//         AccountPhoneNo: phoneNoController.text,
+//         AccountBalance: 100,
+//         AccountType: typeController.text,
 
-    final json = Acc.toJson();
-    await NewAccount.set(json);
-  }
+// );
+
+//     final FirstTransaction = AccountTransactions(
+//       AccountId:Acc.AccountId,
+//         dateTime: DateTime.now(),
+//         Amount: 0,
+//         Type: 'created',
+//         PreviousBalance: Acc.AccountBalance);
+
+
+//     final json = Acc.toJson();
+//     await NewAccount.set(json);
+
+//      final TransactionLink = FirebaseFirestore.instance
+//      .collection('user')
+//      .doc('R6YEWRDHEsK0NrPTnhET')
+//      .collection('accounts')
+//     .doc(Acc.AccountId)
+//     .collection('transactions')
+//     .doc('0T');
+
+//     final json1 = FirstTransaction.toJson();
+//     await TransactionLink.set(json1);
+//   }
+
+
+
+  Future AddNewTransaction() async {
+
+    final NewTransaction={
+'AccountTransactions':FieldValue.arrayUnion([{
+'date':DateTime.now(),
+'description':'Account is Created',
+'amount':0,
+'type':'created'
+}])};
+        final NewAccount1 = FirebaseFirestore.instance.collection('user')
+        
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('accounts')
+        .doc();
+        await NewAccount1.update(NewTransaction);
+      //  TransactionItem()
+}
 }

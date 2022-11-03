@@ -1,116 +1,23 @@
-import 'package:account_book/classes/AcountTransactions.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/widgets.dart';
-
-import 'package:account_book/Pages/Account/AccountDetailPage.dart';
 import 'package:account_book/classes/AccountsC.dart';
+import 'package:account_book/configurations/AppColors.dart';
 import 'package:account_book/configurations/BigText.dart';
 import 'package:account_book/configurations/Dimensions.dart';
 import 'package:account_book/configurations/SmallText.dart';
+import 'package:flutter/material.dart';
 
-import '../classes/DummyData.dart';
-import '../configurations/AppColors.dart';
+import '../Pages/Account/AccountDetailPage.dart';
 
-class CustomerList extends StatelessWidget {
-  final String image;
-  final String CustomerName;
-  final double balance;
-  final Color color;
-  late BuildContext globalcontext;
-  late FirebaseFirestore db;
-
-  void setthecontext(BuildContext context) {
-    globalcontext = context;
-  }
-
-  BuildContext getthecontext() {
-    return globalcontext;
-  }
-
-  CustomerList({
-    Key? key,
-    required this.image,
-    required this.CustomerName,
-    required this.balance,
-    required this.color, 
-    //required this.db,
-  }) : super(key: key);
-
-
-
-
-
-  Stream<List<AccountsC>> GetAccount() => FirebaseFirestore.instance
-     // .collection('user').doc('o4yqvPnb7z5BCbV4a7DS').
-      .collection('accounts').orderBy('AccountTitle',descending: false)
-      .snapshots()
-      .map((snapshots) => snapshots.docs
-          .map((docs) => AccountsC.fromJson(docs.data()))
-          .toList());
-
-
-    //        Stream<List<AccountTransactions>> GetAccount() => FirebaseFirestore.instance
-    //  // .collection('user').doc('o4yqvPnb7z5BCbV4a7DS').
-    //   .collection('transactions')
-    //   .snapshots()
-    //   .map((snapshots) => snapshots.docs
-    //       .map((docs) => AccountTransactions.fromJson(docs.data()))
-    //       .toList());
-
-
-          
-
-// void getStarted_readData() =>FirebaseFirestore.instance
-//       .collection('accounts').get().then((value){
-//       for (var doc in event.docs) {
-//         print("${doc.id} => ${doc.data()}");
-//       }});
-      // .snapshots()
-      // .map((snapshots) => snapshots.docs
-      //     .map((docs) => AccountsC.fromJson(docs.data()))
-      //     .toList());
-
+class ListElement extends StatelessWidget {
+  final AccountsC account;
+  const ListElement({super.key, required this.account});
+  
 
   @override
   Widget build(BuildContext context) {
-    setthecontext(context);
-
-    return Container(
-
-      child: SingleChildScrollView(
-        physics: NeverScrollableScrollPhysics(),
-        child: StreamBuilder<List<AccountsC>>(
-            stream: GetAccount(),
-            builder: (context, snapshot) {
-              if (snapshot.data == null) {
-                return 
-                Text('No Relvant Data${snapshot.data}');
-                
-              } else if (snapshot.hasError) {
-                return Text('Error');
-              } else if (snapshot.hasData) {
-                final accounts = snapshot.data!;
-
-                return ListView(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: accounts.map(buildList).toList(),
-                );
-              } else {
-                return CircularProgressIndicator();
-              }
-            }),
-      ),
-    );
-  }
-
-  Widget buildList(AccountsC account) => GestureDetector(
+    return GestureDetector(
         onTap: () => {
           Navigator.push(
-              getthecontext(),
+              context,
               MaterialPageRoute(
                   builder: (context) => AccountDetailPage(account: account))),
         },
@@ -141,10 +48,10 @@ class CustomerList extends StatelessWidget {
                                 height: 50,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(30),
-                                    // image: DecorationImage(
-                                    //     image:
-                                    //         NetworkImage(account.AccountImage),
-                                    //     fit: BoxFit.cover)
+                                    image: DecorationImage(
+                                        image:
+                                            NetworkImage(account.AccountImage),
+                                        fit: BoxFit.cover)
                                         ),
                               ),
                             ],
@@ -213,4 +120,5 @@ class CustomerList extends StatelessWidget {
           ),
         ),
       );
+  }
 }

@@ -102,7 +102,7 @@ class TableElement extends StatelessWidget {
                 child: SmallText(
                   text: TransactionDown == 0
                       ? ''
-                      : 'Rs. ${TransactionDown.toString()}',
+                      : '${TransactionDown.toString()}',
                   color: Colors.red,
                   weight: FontWeight.w600,
                 ),
@@ -121,7 +121,7 @@ class TableElement extends StatelessWidget {
                 child: SmallText(
                   text: TransactionUp == 0
                       ? ''
-                      : 'Rs. ${TransactionUp.toString()}',
+                      : '${TransactionUp.toString()}',
                   color: Colors.green,
                   weight: FontWeight.w600,
                 ),

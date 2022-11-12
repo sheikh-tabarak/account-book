@@ -1,7 +1,6 @@
 import 'package:account_book/HomePage.dart';
-import 'package:account_book/Pages/UserAccount/Signup.dart';
+import 'package:account_book/Screens/Admin/Login.dart';
 import 'package:account_book/configurations/SmallText.dart';
-import 'package:account_book/databases/FlutterFire.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -10,17 +9,23 @@ import 'package:flutter/src/widgets/framework.dart';
 import '../../configurations/AppColors.dart';
 import '../../configurations/BigText.dart';
 import '../../configurations/Dimensions.dart';
+import '../../databases/FlutterFire.dart';
+import '../../models/UserModel.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class Signup extends StatefulWidget {
+  const Signup({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<Signup> createState() => _SignupState();
 }
 
-class _LoginState extends State<Login> {
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+class _SignupState extends State<Signup> {
+
+  final TextEditingController _usernameController = TextEditingController();
+    final TextEditingController _passwordController = TextEditingController();
+      final TextEditingController _phoneNoController = TextEditingController();
+      final TextEditingController _emailController = TextEditingController();
+
 
   bool IsUserExist = false;
   bool IsPasswordCorrect = false;
@@ -54,7 +59,7 @@ class _LoginState extends State<Login> {
                       margin: EdgeInsets.only(top: 50),
                       height: 100,
                       width: 100,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         image: DecorationImage(
                           fit: BoxFit.cover,
                           image: AssetImage(
@@ -68,7 +73,7 @@ class _LoginState extends State<Login> {
                       height: Dimensions.height5,
                     ),
                     BigText(
-                      text: "Login",
+                      text: "Create a New Account",
                       color: Colors.white,
                       size: 24,
                     ),
@@ -81,41 +86,149 @@ class _LoginState extends State<Login> {
 
           padding: EdgeInsets.all(30),
 
-          // decoration: BoxDecoration(border: OutlineInputBorder()),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+
                 Container(
                   //  color: Colors.white,
                   padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                   child: TextFormField(
-                    controller: _emailController,
+
+                        controller: _usernameController,
+                    onChanged: (String value) => {
+                      print('CustomerAccountsData[0].username + == ' + value),
+
+                      if (value == 'test')
+                        {
+                          print('Done'),
+                          setState(() => {
+                                IsUserExist = true,
+                                print('test' + ' == ' + value)
+                              })
+                        }
+                      else
+                        {
+                          setState(() => {
+                                IsUserExist = false,
+                              })
+                        }
                  
+                    },
+
                     decoration: InputDecoration(
-                      labelText: 'Email ',
+                      labelText: 'Username',
                       errorText: usernamemessage,
-                      border: OutlineInputBorder(
+                      border: const OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.green),
                         borderRadius: BorderRadius.all(Radius.circular(8.0)),
                       ),
                       focusColor: Colors.yellow,
                       hoverColor: Colors.green,
                       suffixIconColor: Colors.pink,
+
                       suffixIcon: Icon(
                         IsUserExist ? Icons.check_circle : Icons.error,
                       ),
                     ),
                   ),
-                ),
+                ), 
+                Container(
+                  //  color: Colors.white,
+                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                  child: TextFormField(
+
+                        controller: _emailController,
+                    onChanged: (String value) => {
+                      print('CustomerAccountsData[0].username + == ' + value),
+                      if (value == 'test')
+                        {
+                          print('Done'),
+                          setState(() => {
+                                IsUserExist = true,
+                                //   userLock = i,
+                                print('test' + ' == ' + value)
+                              })
+                        }
+                      else
+                        {
+                          setState(() => {
+                                IsUserExist = false,
+                              })
+                        }
+                      //  }
+                    },
+               //     initialValue: '',
+
+                    decoration: InputDecoration(
+                      labelText: 'Email ',
+                      // focusedErrorBorder:Border(Border.all(color: AppColors.mainColor, width: 1))),
+                      errorText: usernamemessage,
+                      border: const OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.green),
+                        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                      ),
+                      focusColor: Colors.yellow,
+                      hoverColor: Colors.green,
+                      suffixIconColor: Colors.pink,
+
+                      suffixIcon: Icon(
+                        IsUserExist ? Icons.check_circle : Icons.error,
+                      ),
+                    ),
+                  ),
+                ), 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 Container(
                   //  color: Colors.white,
                   padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: TextFormField(
                     controller: _passwordController,
-                    obscureText: true,
-                
+                    onChanged: (String value) => {
+                      if (value == 'pass')
+                        {
+                          print('Done'),
+                          setState(() => {
+                                IsPasswordCorrect = true,
+                                print('pass' + ' == ' + value)
+                              })
+                        }
+                      else
+                        {
+                          setState(() => {
+                                IsPasswordCorrect = false,
+                              })
+                        }
+                    },
+                //    initialValue: '',
                     decoration: InputDecoration(
                       labelText: 'Password ',
                       errorText: passwordmessage,
@@ -127,32 +240,110 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                 ),
+                  Container(
+                  //  color: Colors.white,
+                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  child: TextFormField(
+                    controller: _phoneNoController,
+                    onChanged: (String value) => {
+                      // if (value == 'pass')
+                      //   {
+                      //     print('Done'),
+                      //     setState(() => {
+                      //           IsPasswordCorrect = true,
+                      //           print('pass' + ' == ' + value)
+                      //         })
+                      //   }
+                      // else
+                      //   {
+                      //     setState(() => {
+                      //           IsPasswordCorrect = false,
+                      //         })
+                      //   }
+                    },
+               //     initialValue: '',
+                    decoration: InputDecoration(
+                      labelText: 'Mobile Number ',
+                      errorText: passwordmessage,
+                      border: OutlineInputBorder(),
+                      suffixIcon: Icon(
+                        IsPasswordCorrect ? Icons.check_circle : Icons.lock,
+                        //   color: AppColors.mainColor,
+                      ),
+                    ),
+                  ),
+                ),
+                
                 SizedBox(
                   height: Dimensions.height10,
                 ),
                 ElevatedButton(
                   style: ButtonStyle(
-       backgroundColor: MaterialStateProperty.all(AppColors.mainColor),
+       backgroundColor: MaterialStateProperty.all(Colors.red),
        shadowColor: MaterialStateProperty.all(Colors.black),
        padding: MaterialStateProperty.all(EdgeInsets.all(10)),
        fixedSize: MaterialStateProperty.all(Size.fromWidth(Dimensions.width30 * 10.5)),
     ),
-                 
-                  onPressed: ()
-
-                  async {
-                    bool shouldNavigate =
-                        await signIn(_emailController.text, _passwordController.text);
-                    if (shouldNavigate) {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => HomePage(),
-                        ),
-                      );
-                    }
+                  
+            //  MaterialButton(
+              //  color: Colors.red,
+                 // backgroundColor: Colors.red,
+                  onPressed: ()  async {
+                   bool shouldNavigate =
+                      await register(_emailController.text, _passwordController.text);
+                  if (shouldNavigate) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Login(),
+                      ),
+                    );
+                    RegisterNewUser(_usernameController.text, _passwordController.text, _phoneNoController.text,_emailController.text);
+                  }                  
                   },
                   child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(10)
+                    ),
+                    
+                      width: Dimensions.width30 * 9,
+                      //    padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                      alignment: Alignment.center,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.account_circle,color:Colors.white),
+
+                         
+                          SizedBox(
+                            width: Dimensions.height10,
+                          ),
+                          Text('Sign up'),
+                        ],
+                      ))
+                ),
+ SizedBox(
+                  height: Dimensions.height30,
+                ),
+
+                Center(child: SmallText(text:'Already have an account ?',color: Color.fromARGB(255, 174, 174, 174),)
+                ,),
+                 SizedBox(
+                  height: Dimensions.height15,
+                ),
+
+ FloatingActionButton.extended(
+                  backgroundColor: AppColors.mainColor,
+                  onPressed: () => {
+                    
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const Login()),
+                    )
+                  },
+                  label: Container(
                       width: Dimensions.width30 * 9,
                       //    padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
                       alignment: Alignment.center,
@@ -167,42 +358,7 @@ class _LoginState extends State<Login> {
                         ],
                       )),
                 ),
-                SizedBox(
-                  height: Dimensions.height30,
-                ),
-                Center(
-                  child: SmallText(
-                    text: 'Don\'t have an account ?',
-                    color: Color.fromARGB(255, 174, 174, 174),
-                  ),
-                ),
-                SizedBox(
-                  height: Dimensions.height15,
-                ),
-                FloatingActionButton.extended(
-                  backgroundColor: Colors.red,
-                  onPressed: () => {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Signup()),
-                    )
-                  },
-                  label: Container(
-                      width: Dimensions.width30 * 9,
-                      //    padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                      alignment: Alignment.center,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.account_circle),
-                          SizedBox(
-                            width: Dimensions.height10,
-                          ),
-                          Text('Create a New Account'),
-                        ],
-                      )),
-                ),
-
+               
                 // TextButton(
                 //   onPressed: () {},
                 //   child: Text(

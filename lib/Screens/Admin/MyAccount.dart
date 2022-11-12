@@ -1,15 +1,29 @@
 import 'package:account_book/configurations/BigText.dart';
 import 'package:account_book/configurations/Dimensions.dart';
 import 'package:account_book/configurations/SmallText.dart';
+import 'package:account_book/models/UserModel.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 class MyAccount extends StatelessWidget {
-  const MyAccount({super.key});
+
+  //final UserModel user;
+
+
+  const MyAccount({super.key, });
 
   @override
   Widget build(BuildContext context) {
+
+
+String useremail=FirebaseAuth.instance.currentUser!.email.toString();
+String username = useremail.substring(0,useremail.indexOf('@')).toUpperCase();
+
+
+
     return Container(
       alignment: Alignment.center,
       child: Column(
@@ -26,13 +40,15 @@ class MyAccount extends StatelessWidget {
                     fit: BoxFit.cover)),
           ),
           SizedBox(
-            height: Dimensions.height10,
+            height: Dimensions.height15,
           ),
-          BigText(text: 'Muhammad Tabarak'),
+          BigText(
+            
+            text:username),
           SizedBox(
             height: Dimensions.height10,
           ),
-          SmallText(text: '03154706237'),
+          SmallText(text:useremail),
 
           //  Image.network('https://raw.githubusercontent.com/jonataslaw/getx-community/master/getx.png'),
         ],

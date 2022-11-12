@@ -1,11 +1,7 @@
-import 'package:account_book/configurations/AppColors.dart';
 import 'package:account_book/configurations/BigText.dart';
 import 'package:account_book/configurations/Dimensions.dart';
 import 'package:account_book/configurations/SmallText.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class HighlightBox extends StatelessWidget {
   final Color color;
@@ -26,6 +22,9 @@ class HighlightBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+double.parse(text);
+
+
     return Container(
      
 padding:EdgeInsets.all(Dimensions.height10),
@@ -61,7 +60,7 @@ padding:EdgeInsets.all(Dimensions.height10),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-BigText(text: 'Rs. $text',size: Dimensions.font20,color: textColor,),
+BigText(text: 'Rs.$text',size: Dimensions.font20,color: textColor,),
 SmallText(text: message, color: textColor,)
               ],
             )

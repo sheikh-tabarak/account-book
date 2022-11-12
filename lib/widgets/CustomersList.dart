@@ -1,17 +1,15 @@
-import 'package:account_book/classes/AcountTransactions.dart';
+import 'package:account_book/models/TransactionModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:account_book/Pages/Account/AccountDetailPage.dart';
-import 'package:account_book/classes/AccountsC.dart';
+import 'package:account_book/Screens/Transactions/AccountTransactions.dart';
+import 'package:account_book/models/AccountsModel.dart';
 import 'package:account_book/configurations/BigText.dart';
 import 'package:account_book/configurations/Dimensions.dart';
 import 'package:account_book/configurations/SmallText.dart';
-
-import '../classes/DummyData.dart';
 import '../configurations/AppColors.dart';
 
 class CustomerList extends StatelessWidget {
@@ -43,12 +41,12 @@ class CustomerList extends StatelessWidget {
 
 
 
-  Stream<List<AccountsC>> GetAccount() => FirebaseFirestore.instance
+  Stream<List<AccountsModel>> GetAccount() => FirebaseFirestore.instance
      // .collection('user').doc('o4yqvPnb7z5BCbV4a7DS').
       .collection('accounts').orderBy('AccountTitle',descending: false)
       .snapshots()
       .map((snapshots) => snapshots.docs
-          .map((docs) => AccountsC.fromJson(docs.data()))
+          .map((docs) => AccountsModel.fromJson(docs.data()))
           .toList());
 
 
@@ -82,7 +80,7 @@ class CustomerList extends StatelessWidget {
 
       child: SingleChildScrollView(
         physics: NeverScrollableScrollPhysics(),
-        child: StreamBuilder<List<AccountsC>>(
+        child: StreamBuilder<List<AccountsModel>>(
             stream: GetAccount(),
             builder: (context, snapshot) {
               if (snapshot.data == null) {
@@ -107,7 +105,7 @@ class CustomerList extends StatelessWidget {
     );
   }
 
-  Widget buildList(AccountsC account) => GestureDetector(
+  Widget buildList(AccountsModel account) => GestureDetector(
         onTap: () => {
           Navigator.push(
               getthecontext(),

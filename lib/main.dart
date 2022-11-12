@@ -1,3 +1,5 @@
+import 'package:account_book/models/UserModel.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -11,7 +13,7 @@ import 'package:get/get.dart';
 import 'package:page_transition/page_transition.dart';
 
 import 'HomePage.dart';
-import 'Pages/UserAccount/Login.dart';
+import 'Screens/Admin/Login.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,7 +44,8 @@ class MyApp extends StatelessWidget {
           // is not restarted.
           primarySwatch: Colors.blue,
         ),
-        home:  HomePage(),
+        home:
+          HomePage(user: UserModel(username: 'testuser', email: FirebaseAuth.instance.currentUser!.email.toString(), password: 'testuser', phoneNo: '08882882', Cash: 0, TotalAccounts: 0, role: 'user'),),
         // AnimatedSplashScreen(
         //     splashIconSize: double.infinity, //Dimensions.screenHeight,
         //     duration: 200,
@@ -70,9 +73,9 @@ class MyApp extends StatelessWidget {
         //         ],
         //       ),
         //     ),
-        //     nextScreen: HomePage(),
+        //     nextScreen: Login(),
         //     splashTransition: SplashTransition.fadeTransition,
         //     backgroundColor: AppColors.mainColor),
-            );
+             );
   }
 }

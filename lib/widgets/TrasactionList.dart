@@ -1,4 +1,4 @@
-import 'package:account_book/classes/AcountTransactions.dart';
+import 'package:account_book/models/TransactionModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -9,6 +9,6 @@ class TrasactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(child: Text(''));
+    return const Text('');
   }
 }

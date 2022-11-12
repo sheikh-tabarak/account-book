@@ -1,8 +1,7 @@
+// ignore_for_file: non_constant_identifier_names, depend_on_referenced_packages
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart'; // for other locales
 import '../configurations/AppColors.dart';
 import '../configurations/BigText.dart';
 import '../configurations/Dimensions.dart';
@@ -28,15 +27,17 @@ class TableElement extends StatelessWidget {
   Widget build(BuildContext context) {
     return Table(
       //  TableCellVerticalAlignment.middle,
+
       columnWidths: const <int, TableColumnWidth>{
         0: FlexColumnWidth(),
         1: FixedColumnWidth(90),
         2: FixedColumnWidth(90),
       },
+
       defaultVerticalAlignment: TableCellVerticalAlignment.middle,
       children: <TableRow>[
         TableRow(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               top: BorderSide(
                   color: Color.fromARGB(255, 213, 213, 213), width: 0.4),
@@ -48,7 +49,7 @@ class TableElement extends StatelessWidget {
               verticalAlignment: TableCellVerticalAlignment.middle,
               //   crossAxisAlignment:Tablecell
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     color: Color.fromARGB(255, 255, 255, 255),
                     border: Border(
                       top: BorderSide(
@@ -89,39 +90,44 @@ class TableElement extends StatelessWidget {
                 ),
               ),
             ),
+
+//constraints: BoxConstraints.expand(),
+
             TableCell(
               verticalAlignment: TableCellVerticalAlignment.middle,
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Color.fromARGB(255, 244, 244, 244),
                 ),
                 padding: EdgeInsets.all(Dimensions.height15),
                 margin: EdgeInsets.zero,
                 alignment: Alignment.centerRight,
-                height: 97,
+                //  height: double.,
+                //    height: double.,
+
                 child: SmallText(
                   text: TransactionDown == 0
                       ? ''
-                      : '${TransactionDown.toString()}',
+                      : TransactionDown.toString(),
                   color: Colors.red,
                   weight: FontWeight.w600,
                 ),
               ),
             ),
+
             TableCell(
               verticalAlignment: TableCellVerticalAlignment.middle,
               child: Container(
                 alignment: Alignment.centerRight,
                 padding: EdgeInsets.all(Dimensions.height15),
                 margin: EdgeInsets.zero,
-                height: 97,
-                decoration: BoxDecoration(
+
+                //  height: 97,
+                decoration: const BoxDecoration(
                   color: Colors.white,
                 ),
                 child: SmallText(
-                  text: TransactionUp == 0
-                      ? ''
-                      : '${TransactionUp.toString()}',
+                  text: TransactionUp == 0 ? '' : TransactionUp.toString(),
                   color: Colors.green,
                   weight: FontWeight.w600,
                 ),

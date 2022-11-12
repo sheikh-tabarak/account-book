@@ -1,9 +1,10 @@
 import 'dart:async';
 
 import 'package:account_book/HomePage.dart';
-import 'package:account_book/Pages/Account/Accounts.dart';
-import 'package:account_book/classes/AccountsC.dart';
-import 'package:account_book/classes/AcountTransactions.dart';
+import 'package:account_book/Screens/Accounts/Accounts.dart';
+import 'package:account_book/models/AccountsModel.dart';
+import 'package:account_book/models/TransactionModel.dart';
+import 'package:account_book/widgets/DropDown.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -15,6 +16,7 @@ import '../../configurations/Dimensions.dart';
 import '../../databases/Functions.dart';
 
 class AddAccount extends StatefulWidget {
+
   const AddAccount({super.key});
 
   @override
@@ -24,17 +26,17 @@ class AddAccount extends StatefulWidget {
 class _AddAccountState extends State<AddAccount> {
   final titleController = TextEditingController();
   final phoneNoController = TextEditingController();
-  final typeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
 
-   
+   const List<String> TypeList = <String>['Customer', 'Supplier', 'Other'];
+
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.mainColor,
-        title: Text('Add Customer'),
+        title: Text('Add Account'),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -46,25 +48,25 @@ class _AddAccountState extends State<AddAccount> {
                   onChanged: (String value) => {print(value)},
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    hintText: 'Enter the title of Account',
+                    hintText: 'Account Title',
+                    prefixIcon: Icon(Icons.account_box)
                   ),
+
+                  
                 ),
+                 SizedBox(height: Dimensions.height15,),
                 TextField(
                   controller: phoneNoController,
                   onChanged: (String value) => {print(value)},
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    hintText: 'Enter the Phone no of Account',
+                    hintText: "Phone ",
+                    prefixIcon: Icon(Icons.phone)
                   ),
+                  
                 ),
-                TextField(
-                  controller: typeController,
-                  onChanged: (String value) => {print(value)},
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter the type of Account',
-                  ),
-                ),
+                SizedBox(height: Dimensions.height15,),
+              DropDown(),
               ],
             )),
       ),
@@ -80,7 +82,7 @@ class _AddAccountState extends State<AddAccount> {
         FloatingActionButton.extended(
           backgroundColor: AppColors.mainColor,
           onPressed: () => {
-            AddNewAccount(titleController.text, phoneNoController.text, typeController.text),
+            AddNewAccount(titleController.text, phoneNoController.text, GetdropdownValue()),
           //  AddNewTransaction(),
 
         //  AddNewTransaction(),

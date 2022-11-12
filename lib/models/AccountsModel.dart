@@ -1,106 +1,129 @@
+import 'package:account_book/models/TransactionModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-//import 'package:travel_budget/credentials.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AccountsModel {
-  String title;
-  DateTime startDate;
-  DateTime endDate;
-  double budget;
-  Map budgetTypes;
-  String travelType;
-  String photoReference;
-  String notes;
-  String documentId;
-  double saved;
-  List ledger;
+   String AccountId;
+  final String AccountImage;
+  final String AccountTitle;
+  final String AccountPhoneNo;
+  final double AccountBalance;
+  final String AccountType;
 
-  AccountsModel(
-    this.title,
-    this.startDate,
-    this.endDate,
-    this.budget,
-    this.budgetTypes,
-    this.travelType,
-    this.photoReference,
-    this.notes,
-    this.documentId,
-    this.saved,
-    this.ledger,
-  );
+  AccountsModel({
+    required this.AccountId,
+    required this.AccountImage,
+    required this.AccountTitle,
+    required this.AccountPhoneNo,
+    required this.AccountBalance,
+    required this.AccountType,
+  
+  });
 
-  // formatting for upload to Firbase when creating the AccountsModel
+
   Map<String, dynamic> toJson() => {
-        'title': title,
-        'startDate': startDate,
-        'endDate': endDate,
-        'budget': budget,
-        'budgetTypes': budgetTypes,
-        'travelType': travelType,
-        'photoReference': photoReference,
+        'AccountId': AccountId,
+        'AccountImage': AccountImage,
+        'AccountTitle': AccountTitle,
+        'AccountPhoneNo': AccountPhoneNo,
+        'AccountBalance': AccountBalance,
+        'AccountType': AccountType,
       };
 
- 
-  //creating a AccountsModel object from a firebase snapshot
- 
-  // AccountsModel.fromSnapshot(DocumentSnapshot snapshot):
-  //       title = snapshot.data()['title'],
-  //       startDate = snapshot.data()['startDate'].toDate(),
-  //       endDate = snapshot.data()['endDate'].toDate(),
-  //       budget = snapshot.data()['budget'],
-  //       budgetTypes = snapshot.data()['budgetTypes'],
-  //       travelType = snapshot.data()['travelType'],
-  //       photoReference = snapshot.data()['photoReference'],
-  //       notes = snapshot.data()['notes'],
-  //       documentId = snapshot.id,
-  //       saved = snapshot.data()['saved'],
-  //       ledger = snapshot.data()['ledger'];
+  static AccountsModel fromJson(Map<String, dynamic> json) => AccountsModel(
+    
+      AccountId: json['AccountId'],
+      AccountBalance: json['AccountBalance'],
+      AccountImage: json['AccountImage'],
+      AccountPhoneNo: json['AccountPhoneNo'],
+      AccountTitle: json['AccountTitle'],
+     AccountType: json['AccountType'], //A: json['A'], 
+
+      );
+}
+
+//  Method Creating/adding a new account 
+//  as a document of account collection to 
+//  firebase firestore
+
+Future AddNewAccount(String title, String phone, String type) async {
+  final NewAccount = FirebaseFirestore.instance
+      .collection('user')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .collection('accounts')
+      .doc();
+
+  final Acc = AccountsModel(
+    AccountId: NewAccount.id,
+    AccountImage:
+        'https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=740&t=st=1666973637~exp=1666974237~hmac=85143508f2ec52e9df251ae1b03ef76ebef47326e6a9d433ea2df8a08feea754',
+    AccountTitle: title,
+    AccountPhoneNo: phone,
+    AccountBalance: 0,
+    AccountType: type,
+  );
+  final FirstTransaction = AccountTransactions(
+      AccountId: Acc.AccountId,
+      dateTime: DateTime.now(),
+      Amount: 0,
+      Type: '',
+      Description: 'New Account Created',
+      PreviousBalance: Acc.AccountBalance);
+
+  final json = Acc.toJson();
+  await NewAccount.set(json);
+
+  final TransactionLink = FirebaseFirestore.instance
+      .collection('user')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .collection('accounts')
+      .doc(Acc.AccountId)
+      .collection('transactions')
+      .doc('created | ${DateTime.now()}' );
+
+  final json1 = FirstTransaction.toJson();
+  await TransactionLink.set(json1);
 
 
 
-  Map<String, Icon> types() => {
-        "car": Icon(Icons.directions_car, size: 50),
-        "bus": Icon(Icons.directions_bus, size: 50),
-        "train": Icon(Icons.train, size: 50),
-        "plane": Icon(Icons.airplanemode_active, size: 50),
-        "ship": Icon(Icons.directions_boat, size: 50),
-        "other": Icon(Icons.directions, size: 50),
-      };
+await FirebaseFirestore.instance
+      .collection('user')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .update({'TotalAccounts': FieldValue.increment(1)});
+}
 
-  // return the google places image
-  // Image getLocationImage() {
-  //   final baseUrl = "https://maps.googleapis.com/maps/api/place/photo";
-  //   final maxWidth = "1000";
-  //   final url =
-  //       "$baseUrl?maxwidth=$maxWidth&photoreference=$photoReference&key=$PLACES_API_KEY";
-  //   return Image.network(url, fit: BoxFit.cover);
-  // }
+//  Method deleting account and all of it's 
+//  transactions from firebase firestore.
 
-  int getTotalAccountsModelDays() {
-    return endDate.difference(startDate).inDays;
+Future<void> deleteAccount(String AcountID) async {
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  FirebaseFirestore trans = FirebaseFirestore.instance;
+
+  var deleteTransactions = trans
+      .collection("user")
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .collection('accounts')
+      .doc(AcountID)
+      .collection('transactions');
+  var snapshot = await deleteTransactions.get();
+  for (var docs in snapshot.docs) {
+    await docs.reference.delete();
+
   }
 
-  int getDaysUntilAccountsModel() {
-    int diff = startDate.difference(DateTime.now()).inDays;
-    if (diff < 0) {
-      diff = 0;
-    }
-    return diff;
-  }
+  db.collection("user")
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .collection('accounts')
+      .doc(AcountID)
+      .delete()
+      .then(
+        (doc) => print("Account Deleted"),
+        onError: (e) => print("Error updating document $e"),
+      );
 
-  Map<String, dynamic> ledgerItem(String amount, String type) {
-    var amountDouble = double.parse(amount);
-    if (type == "spent") {
-      amountDouble = double.parse("-" + amount);
-    }
-    return {
-      'ledger': FieldValue.arrayUnion([
-        {
-          "date": DateTime.now(),
-          "amount": amountDouble,
-        },
-      ]),
-      'saved': FieldValue.increment(amountDouble)
-    };
-  }
+
+      await FirebaseFirestore.instance
+      .collection('user')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .update({'TotalAccounts': FieldValue.increment(-1)});
 }

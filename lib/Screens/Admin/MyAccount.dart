@@ -39,12 +39,12 @@ class MyAccount extends StatelessWidget {
                                 var output = snapshot.data!.data();
                                 var cash =
                                     output!['Cash'];
-                                    var passwords=output!["password"];
-                                    var username = output!['username'];
-                                    var phoneNumber = output!['phoneNo'];
-                                    var email=output!['email'];
-                                    var abalance=output!['TotalAccounts'];
-                                    var noofaccounts=output!['TotalAccounts'];
+                                    var passwords=output["password"];
+                                    var username = output['username'];
+                                    var phoneNumber = output['phoneNo'];
+                                    var email=output['email'];
+                                    var abalance=output['TotalAccounts'];
+                                    var noofaccounts=output['TotalAccounts'];
 
                                     
                                      // <-- Your value

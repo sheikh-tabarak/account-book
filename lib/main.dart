@@ -48,37 +48,37 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         home:
-         HomePage(user: UserModel(username: username, email: FirebaseAuth.instance.currentUser!.email.toString(), password: 'm123456', phoneNo: '55555555', Cash: 0, TotalAccounts: 0, role: 'user'),),
-        // AnimatedSplashScreen(
-        //     splashIconSize: double.infinity, //Dimensions.screenHeight,
-        //     duration: 200,
-        //     splash: Container(
-        //       child: Column(
-        //         crossAxisAlignment: CrossAxisAlignment.center,
-        //         mainAxisAlignment: MainAxisAlignment.center,
-        //         children: [
-        //           Image(
-        //               width: 100,
-        //               height: 100,
-        //               image: AssetImage('assets/images/accountbooklogo.png')),
-        //           BigText(
-        //             text: 'Account Book',
-        //             color: Colors.white,
-        //             size: 20,
-        //           ),
-        //           SizedBox(height: 10),
-        //           SmallText(
-        //             text: 'By Tech Legion',
-        //             size: 11,
-        //             color: Colors.white,
-        //             weight: FontWeight.w100,
-        //           )
-        //         ],
-        //       ),
-        //     ),
-        //     nextScreen: Login(),
-        //     splashTransition: SplashTransition.fadeTransition,
-        //     backgroundColor: AppColors.mainColor),
+         
+        AnimatedSplashScreen(
+            splashIconSize: double.infinity, //Dimensions.screenHeight,
+            duration: 200,
+            splash: Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image(
+                      width: 100,
+                      height: 100,
+                      image: AssetImage('assets/images/accountbooklogo.png')),
+                  BigText(
+                    text: 'Account Book',
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                  SizedBox(height: 10),
+                  SmallText(
+                    text: 'By Tech Legion',
+                    size: 11,
+                    color: Colors.white,
+                    weight: FontWeight.w100,
+                  )
+                ],
+              ),
+            ),
+            nextScreen: Login(),
+            splashTransition: SplashTransition.fadeTransition,
+            backgroundColor: AppColors.mainColor),
              );
   }
 }

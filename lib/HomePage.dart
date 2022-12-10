@@ -12,6 +12,7 @@ import 'models/UserModel.dart';
 //import 'package:get/get.dart';
 
 class HomePage extends StatefulWidget {
+
    final UserModel user;
   const HomePage({super.key, required this.user,});
  
@@ -21,6 +22,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+   UserModel GiveUserData(){
+  return widget.user;
+}
+
   @override
   void initState() {
     super.initState();
@@ -30,6 +36,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+
+   
     //  print(
     //      'Height : ${Dimensions.screenHeight} Width : ${Dimensions.screenWidth}');
     return Scaffold(
@@ -47,11 +55,17 @@ class _HomePageState extends State<HomePage> {
             //Expanded(
             //  child:
             SingleChildScrollView(
-          child: 
+          child:
         //  []
-          
-          
-         pages[_PageIndex],
+        _PageIndex==0?
+          Accounts()
+        :_PageIndex==1?
+       // _PageIndex==1?
+          Cash()
+        :
+        // :_PageIndex==2?
+         MyAccount(user: widget.user)
+       //  pages[_PageIndex],
         ),
         //  ),
       ),
@@ -193,7 +207,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  List<Widget> pages = [Accounts(), const Cash(),  MyAccount()];
+
+ // List<Widget> pages = [Accounts(), const Cash(),  MyAccount(user: GiveUserData(),)];
 
   List<BottomNavigationBarItem> items = [
     const BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Accounts'),

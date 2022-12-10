@@ -1,8 +1,4 @@
 //import 'dart:ffi';
-
-import 'dart:async';
-import 'dart:ffi';
-
 import 'package:account_book/HomePage.dart';
 import 'package:account_book/Screens/Transactions/AddTransaction.dart';
 import 'package:account_book/models/TransactionModel.dart';
@@ -38,6 +34,7 @@ class AccountDetailPage extends StatefulWidget {
 }
 
 class _AccountDetailPageState extends State<AccountDetailPage> {
+  var value;
   bool isLoading = false;
 
   double getBalance() {
@@ -140,7 +137,7 @@ class _AccountDetailPageState extends State<AccountDetailPage> {
                                 TextButton(
                                   onPressed: () {
                                     
-                             deleteAccount(widget.account.AccountId);  
+                             deleteAccount(widget.account);  
                               Navigator.pop(context);
                               Navigator.pop(context);
                     
@@ -208,7 +205,7 @@ class _AccountDetailPageState extends State<AccountDetailPage> {
 
                               else if (snapshot.hasData) {
                                 var output = snapshot.data!.data();
-                                var value =
+                                 value =
                                     output!['AccountBalance']; // <-- Your value
                                 return HighlightBox(
                                     size: Dimensions.height40 * 9,
@@ -404,6 +401,7 @@ class _AccountDetailPageState extends State<AccountDetailPage> {
                         builder: (context) => AddTransaction(
                               account: widget.account,
                               type: 'give',
+                                    value:value
                             ))).then((value) => setState(
                       () => {},
                     )),
@@ -427,6 +425,7 @@ class _AccountDetailPageState extends State<AccountDetailPage> {
                               builder: (context) => AddTransaction(
                                     account: widget.account,
                                     type: 'get',
+                                    value:value
                                   ))),
                     },
                 label: Container(

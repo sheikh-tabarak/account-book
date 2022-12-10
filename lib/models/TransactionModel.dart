@@ -49,13 +49,26 @@ class AccountTransactions {
 
 
 Future CreateTransaction(AccountsModel account, DateTime date, double TransAmount,
-    String type, String Description) async {
+    String type, String Description, double UpdatedBalance) async {
+      
+      await FirebaseFirestore.instance
+      .collection('user')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .collection('accounts')
+      .doc(account.AccountId)
+      .update({'AccountBalance': type == 'get'
+          ? 
+       FieldValue.increment(TransAmount)
+        : FieldValue.increment(-TransAmount)
+      });
+
+
   final AddTransaction = FirebaseFirestore.instance
       .collection('user')
       .doc(FirebaseAuth.instance.currentUser!.uid)
       .collection('accounts')
       .doc(account.AccountId)
-      .collection('transactions');
+      .collection('transactions');  
 
   final AT = AccountTransactions(
       AccountId: account.AccountId,
@@ -63,21 +76,24 @@ Future CreateTransaction(AccountsModel account, DateTime date, double TransAmoun
       Amount: TransAmount,
       Type: type,
       Description: Description,
-      PreviousBalance: type == 'get'
-          ? account.AccountBalance + TransAmount
-          : type == 'give'
-              //&& account.AccountBalance > TransAmount
-              ? account.AccountBalance - TransAmount
-              : account.AccountBalance);
+      PreviousBalance: type == 'get'?UpdatedBalance+TransAmount:
+      type == 'give'
+         && UpdatedBalance > TransAmount
+         ? UpdatedBalance - TransAmount:
+
+         UpdatedBalance
+      //type == 'get'? 
+         // account.AccountBalance
+        // + TransAmount
+        //  : type == 'give'
+        // && account.AccountBalance > TransAmount
+        // ? account.AccountBalance - TransAmount
+        // : account.AccountBalance
+             );
 
   final json = AT.toJson();
   await AddTransaction.doc('$type | ${date.toString()}').set(json);
   
-  await FirebaseFirestore.instance
-      .collection('user')
-      .doc(FirebaseAuth.instance.currentUser!.uid)
-      .collection('accounts')
-      .doc(account.AccountId)
-      .update({'AccountBalance': AT.PreviousBalance.toDouble()});
+  
 }
 

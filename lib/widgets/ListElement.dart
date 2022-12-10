@@ -16,14 +16,16 @@ class ListElement extends StatefulWidget {
 }
 
 class _ListElementState extends State<ListElement> {
+  // account1=widget.account;
   @override
   Widget build(BuildContext context) {
+       AccountsModel account1= widget.account;
     return GestureDetector(
       onTap: () => {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => AccountDetailPage(account: widget.account)))
+                builder: (context) => AccountDetailPage(account: account1)))
                 .then((value) { setState(() {});})
       },
       child: Container(

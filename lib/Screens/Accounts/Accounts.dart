@@ -1,3 +1,4 @@
+import 'package:account_book/Screens/Loading.dart';
 import 'package:account_book/Screens/loading.dart';
 import 'package:account_book/configurations/AppColors.dart';
 import 'package:account_book/configurations/BigText.dart';
@@ -20,19 +21,33 @@ class Accounts extends StatefulWidget {
 class _AccountsState extends State<Accounts> {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
+    bool isLoading =false;
+    return 
+    isLoading==false?
+    StreamBuilder(
         stream: Accountforuser(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          print('Here I am '+snapshot.hasData.toString());
+
+          if(snapshot.stackTrace.toString()==null){
+           isLoading=false;
+           return Text('Error');
+          }
+          else{
           double NegativeBalance = 0;
           double positiveBalance = 0;
-          if (!snapshot.hasData) {
-            return Center(child: Empty());
-          }
+          if (snapshot.data.toString()=='null') {
+            
+            return  Text('');
 
-        //  else if (){}
+          }
            else if (snapshot.hasError) {
-            return Text('Error');
-          } else if(snapshot.hasData){
+            return Text(snapshot.toString());
+            
+          }
+          else if (snapshot.hasData) {
+            print(snapshot.toString());
+            
             return Column(children: [
               Row(
                   children: snapshot.data!.docs.map((e) {
@@ -42,7 +57,8 @@ class _AccountsState extends State<Accounts> {
                   NegativeBalance =
                       NegativeBalance + (-1 * (e['AccountBalance']));
                 }
-                return Container(
+
+              return Container(
                   padding: EdgeInsets.zero,
                   margin: EdgeInsets.zero,
                   decoration: BoxDecoration(color: Colors.red),
@@ -113,15 +129,19 @@ class _AccountsState extends State<Accounts> {
               SizedBox(
                 height: Dimensions.screenHeight - 50,
                 child: SingleChildScrollView(
-                  child: ListView(
+                  child: 
+  // int s = 0;
+                      // snapshot==null?
+                      //  // s==0?
+                      //     Center(child: Text('There is Nothing is here'))
+                      //   : 
+
+                  
+                  ListView(
                       shrinkWrap: true,
                       //      physics: const NeverScrollableScrollPhysics(),
                       children: snapshot.data!.docs.map((e) {
-                        int s=0;
-                        // if (s==0) {
-                        //   return Empty();
-                        // }
-                       //  else {
+                   
                           positiveBalance =
                               positiveBalance + e['AccountBalance'];
                           return ListElement(
@@ -132,15 +152,19 @@ class _AccountsState extends State<Accounts> {
                                   AccountPhoneNo: e['AccountPhoneNo'],
                                   AccountBalance: e['AccountBalance'],
                                   AccountType: e['AccountType']));
-                        
+                     
                       }).toList()),
+          
                 ),
               )
             ]);
+          } else {
+            return Empty();
           }
-          else{
-            return Text('I am here ');
-          }
-        });
+  }
+  }
+  )
+ :
+ Text('Error'); 
   }
 }

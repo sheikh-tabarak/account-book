@@ -28,6 +28,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    String username='tests';
+   // FirebaseFirestore.instance.collection('user').doc(FirebaseAuth.instance.currentUser!.uid).getString("username")
+    //);
     
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -45,7 +48,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         home:
-          HomePage(user: UserModel(username: 'testuser', email: FirebaseAuth.instance.currentUser!.email.toString(), password: 'testuser', phoneNo: '08882882', Cash: 0, TotalAccounts: 0, role: 'user'),),
+         HomePage(user: UserModel(username: username, email: FirebaseAuth.instance.currentUser!.email.toString(), password: 'm123456', phoneNo: '55555555', Cash: 0, TotalAccounts: 0, role: 'user'),),
         // AnimatedSplashScreen(
         //     splashIconSize: double.infinity, //Dimensions.screenHeight,
         //     duration: 200,

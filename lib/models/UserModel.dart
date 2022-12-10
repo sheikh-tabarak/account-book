@@ -1,14 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class UserModel {
-  final String username;
-  final String password;
-  final String email;
-  final String phoneNo;
-  final double Cash;
-  final String role;
-  final int TotalAccounts;
+//  final String UserImage;
+    final String username;
+    final String password;
+    final String email;
+    final String phoneNo;
+    final double Cash;
+    final String role;
+    final int TotalAccounts;
 
   UserModel({
     required this.username,
@@ -19,6 +21,38 @@ class UserModel {
     required this.TotalAccounts,
     required this.role,
   });
+
+  // factory UserModel.fromFirestore(
+  //   DocumentSnapshot<Map<String, dynamic>> snapshot,
+  //   SnapshotOptions? options,
+  // ) {
+  //   final data = snapshot.data();
+  //   return UserModel(
+  //     username: data?['username'],
+  //     email: data?['email'],
+  //     password: data?['password'],
+  //     phoneNo: data?['phoneNo'],
+  //     TotalAccounts: data?['TotalAccounts'],
+  //     role: data?["role"],
+  //     Cash: data?["Cash"]
+  //     //    data?['role'] is Iterable ? List.from(data?['role']) : null,
+  //   );
+  // }
+
+
+  // Map<String, dynamic> toFirestore() {
+  //   return {
+  //     'username': username,
+  //       'email': email,
+  //       'role': role,
+  //       'password': password,
+  //       'phoneNo': phoneNo,
+  //       'Cash': Cash,
+  //       'TotalAccounts': TotalAccounts,
+  //       'role': role,
+  //   };
+  // }
+
 
    Map<String, dynamic> toJson() => {
      'username': username,
@@ -62,3 +96,6 @@ Future RegisterNewUser(
   final json = NewUser.toJson();
   await Register.set(json);
 }
+
+
+

@@ -173,8 +173,11 @@ class _LoginState extends State<Login> {
                                 bool shouldNavigate = await signIn(
                                     _emailController.text,
                                     _passwordController.text);
+                                    print(shouldNavigate);
+
                                 if (shouldNavigate) {
-                                  print(_emailController.text);
+                                  
+                                  print(_emailController.text );
                                   // to get the user Object in to the start of login !!!
 
                                   // StreamBuilder(
@@ -201,6 +204,7 @@ class _LoginState extends State<Login> {
                                       print(e['password'] +
                                           ' = ' +
                                           _passwordController.text);
+                                           print('Done');
                                       // UserModel Current_User = UserModel(
                                       //   username: e['username'],
                                       //   email: e['email'],
@@ -210,7 +214,7 @@ class _LoginState extends State<Login> {
                                       //   TotalAccounts: e['TotalAccounts'],
                                       //   role: e['role'],
                                       // );
-
+                                     
                                       Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(

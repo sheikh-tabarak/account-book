@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:account_book/Screens/Transactions/AccountTransactions.dart';
+import 'package:account_book/configurations/SmallText.dart';
 import 'package:account_book/models/AccountsModel.dart';
 import 'package:account_book/models/TransactionModel.dart';
 import 'package:account_book/configurations/BigText.dart';
@@ -16,7 +17,8 @@ import '../../configurations/Dimensions.dart';
 class AddTransaction extends StatefulWidget {
   final AccountsModel account;
   final String type;
-  AddTransaction({super.key, required this.type, required this.account});
+  final double value;
+  AddTransaction({super.key, required this.type, required this.account, required this.value});
 
   @override
   State<AddTransaction> createState() => _AddTransactionState();
@@ -70,6 +72,8 @@ DateTime selectedDate = DateTime.now();
         child: Container(
             padding: EdgeInsets.all(Dimensions.height20),
             child: Column(
+            //  mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextField(
                   onTap: () {
@@ -122,6 +126,9 @@ DateTime selectedDate = DateTime.now();
                     prefixIcon: Icon(Icons.description)
                   ),
                 ),
+                SizedBox(height: Dimensions.height10),
+                SmallText(text: "Your current Balance is : "+widget.value.toString(),color: Colors.red,)
+
               ],
             )),
       ),
@@ -141,7 +148,9 @@ DateTime selectedDate = DateTime.now();
                 selectedDate,
                 double.parse(amountController.text),
                 widget.type,
-                DescriptionController.text),
+                DescriptionController.text
+                ,widget.value
+                ),
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 duration: const Duration(seconds:2),

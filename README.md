@@ -21,4 +21,4 @@ This application is basicallly designed on flutter and using languages supportin
 [Check here to download](https://sheikhtabarak.me)
 
 ## Developer:
-it was designed by [Muhammad Tabarak](https://sheikhtabarak.me) under [Tech Legion](https://techlegion.ml/)
+it was designed by [Muhammad Tabarak](https://sheikhtabarak.me) under [sheikhtabarak.me](https://sheikhtabarak.me/)

@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   SmallText(
-                    text: 'By Tech Legion',
+                    text: 'By Muhammad Tabarak',
                     size: 11,
                     color: Colors.white,
                     weight: FontWeight.w100,

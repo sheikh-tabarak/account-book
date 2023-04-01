@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:account_book/Screens/Loading.dart';
 import 'package:account_book/Screens/loading.dart';
 import 'package:account_book/configurations/AppColors.dart';
@@ -12,7 +14,7 @@ import '../../databases/DataStreams.dart';
 import '../../widgets/highlightbox.dart';
 
 class Accounts extends StatefulWidget {
-  Accounts({super.key});
+  const Accounts({super.key});
 
   @override
   State<Accounts> createState() => _AccountsState();
@@ -27,7 +29,7 @@ class _AccountsState extends State<Accounts> {
     StreamBuilder(
         stream: Accountforuser(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          print('Here I am '+snapshot.hasData.toString());
+         // print('Here I am '+snapshot.hasData.toString());
 
           if(snapshot.stackTrace.toString()==null){
            isLoading=false;
